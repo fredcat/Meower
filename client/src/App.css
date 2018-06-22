@@ -1,0 +1,388 @@
+img {
+  width: 100%;
+}
+
+p {
+  white-space: pre-line;
+}
+
+body {
+  padding-top: 40px;
+}
+
+.landing {
+  position: relative;
+  background: url("./img/cat-landing-1.jpg") no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  margin-bottom: -50px;
+}
+
+.landing-inner {
+  padding-top: 130px;
+}
+
+.landing-inner h1 {
+  font-family: Segoe Print;
+}
+
+.landing-inner p {
+  font-family: Comic Sans MS;
+}
+
+.dark-overlay {
+  background-color: rgba(0, 0, 0, 0.25);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.form-control::placeholder {
+  color: #bbb !important;
+}
+
+.screen-filled {
+  min-height: 100vh;
+}
+
+.navbar-custom {
+  background-color: Beige;
+  box-shadow: 0px 2px 2px DarkKhaki;
+  padding: 0;
+}
+
+.navbar-custom a.b-border {
+  width: 90px;
+  text-align: center;
+  font-weight: bold;
+  outline: none;
+  border-bottom: 2px solid transparent;
+}
+
+.navbar-custom a.b-border:hover,
+.navbar-custom a.b-border.active {
+  background: PaleGoldenRod;
+  color: black;
+  border-bottom: 2px solid Orange;
+}
+
+.navbar-custom a.dropdown-header {
+  background: white;
+  color: black;
+}
+
+.navbar-custom a.no-border:hover {
+  background: PaleGoldenRod;
+  color: black;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: Segoe Print;
+  padding: 0;
+}
+
+.navbar-brand > img {
+  height: 38px;
+  width: auto;
+}
+
+.nav-link {
+  text-align: center;
+  font-weight: bold;
+  outline: none;
+}
+
+.nav-avatar {
+  width: 100%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-avatar > img {
+  width: 34px;
+  height: 34px;
+}
+
+.footer-custom {
+  background-color: Beige;
+  box-shadow: 0px -2px 2px DarkKhaki;
+}
+
+.name {
+  font-weight: bold;
+  color: Black;
+  display: inline-block;
+}
+
+.name:hover {
+  color: #17a2b8;
+  text-decoration: underline;
+}
+
+.upright-button {
+  color: #343a40;
+}
+
+.upright-button:hover {
+  color: #17a2b8;
+}
+
+.post-img-preview {
+  height: 150px;
+  width: auto;
+}
+
+.post-avatar {
+  width: 60px;
+  height: 60px;
+}
+
+.post-image {
+  max-height: 453px;
+  max-width: 490px;
+}
+
+.post-image > img {
+  max-height: 450px;
+  max-width: 490px;
+  width: auto;
+  margin-bottom: 3px;
+}
+
+.post-buttons > button {
+  background-color: transparent;
+  width: 100px;
+  border: 0;
+}
+
+.post-buttons > button:focus {
+  box-shadow: none;
+}
+
+.like-button:hover {
+  color: #17a2b8;
+}
+
+.comment-button:hover {
+  color: #28a745;
+}
+
+.step-into-link {
+  color: #6c757d;
+}
+
+.step-into-link:hover {
+  color: #17a2b8;
+}
+
+.post-box div.form-group {
+  margin-bottom: 0px;
+}
+
+.post-box textarea {
+  height: 3rem;
+  padding: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.post-box textarea:focus {
+  height: 6rem;
+}
+.post-box textarea:not(:empty) {
+  height: 6rem;
+}
+
+.postfeed-nav {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.postfeed-nav a {
+  width: 110px;
+  padding: 4px;
+}
+
+.postfeed-nav a.active,
+.postfeed-nav a:hover {
+  border-bottom: 2px solid #17a2b8;
+}
+
+.comment-box {
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.comment-box div.form-group {
+  margin-bottom: 0px;
+}
+
+.comment-box textarea {
+  height: 2.5rem;
+  padding: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.comment-box textarea:focus {
+  height: 5rem;
+}
+.comment-box textarea:not(:empty) {
+  height: 5rem;
+}
+
+.comment-item {
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.comment-avatar {
+  width: 40px;
+  height: 40px;
+}
+
+.profile-avatar {
+  width: 200px;
+  height: 200px;
+}
+
+.profile-avatar > img {
+  width: 200px;
+  height: 200px;
+}
+
+.people-avatar {
+  width: 180px;
+  height: 180px;
+}
+
+.people-avatar > img {
+  width: 180px;
+  height: 180px;
+}
+
+.follow-button {
+  background: none;
+  border: 2px solid #17a2b8;
+  color: #17a2b8;
+  font-weight: bold;
+  width: 90px;
+}
+
+.follow-button:hover {
+  background: #e6ecf0;
+}
+
+.follow-button:focus {
+  box-shadow: none;
+}
+
+.unfollow-button {
+  background: #17a2b8;
+  border: 2px solid transparent;
+  color: white;
+  font-weight: bold;
+  width: 90px;
+}
+
+.unfollow-button:focus:hover {
+  background: #17a2b8;
+}
+.unfollow-button:hover {
+  background: #dc3545;
+}
+
+.unfollow-button:focus {
+  box-shadow: none;
+}
+
+.unfollow-button .following,
+.unfollow-button:focus:hover .following {
+  display: inline;
+}
+.unfollow-button .unfollow,
+.unfollow-button:focus:hover .unfollow {
+  display: none;
+}
+
+.unfollow-button:hover .following {
+  display: none;
+}
+.unfollow-button:hover .unfollow {
+  display: inline;
+}
+
+.file-input {
+  width: 280px;
+}
+
+.error-font {
+  color: red;
+  font-size: 0.8rem;
+}
+
+.fixed-width-8 {
+  width: 720px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.fixed-width-7 {
+  width: 630px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.fixed-width-6 {
+  width: 540px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.fixed-width-4 {
+  width: 360px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.fixed-width-3_5 {
+  width: 320px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.fixed-width-3 {
+  width: 270px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.fixed-width-1 {
+  width: 90px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.font-size-1 {
+  font-size: 0.7rem;
+}
+
+.font-size-2 {
+  font-size: 0.8rem;
+}
+
+.font-size-3 {
+  font-size: 0.9rem;
+}
+
+.font-size-4 {
+  font-size: 1rem;
+}
+
+.font-size-5 {
+  font-size: 1.05rem;
+}
+
+.font-size-6 {
+  font-size: 1.15rem;
+}

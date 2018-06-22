@@ -1,0 +1,15 @@
+{
+  "short_name": "Meower",
+  "name": "Only for Cat Lovers",
+  "icons": [
+    {
+      "src": "cat-icon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": "./index.html",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
