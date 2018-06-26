@@ -297,6 +297,11 @@ body {
 }
 
 .unfollow-button .following,
+.unfollow-button .unfollow {
+  display: none;
+}
+
+.unfollow-button .following,
 .unfollow-button:focus:hover .following {
   display: inline;
 }
