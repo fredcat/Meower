@@ -1,22 +1,12 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import Moment from "react-moment";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { addFollow, removeFollow } from "../../actions/profileActions";
 import isEmpty from "../../validation/is-empty";
+import FollowButton from "../profiles/FollowButton";
 
 class PeopleSidebar extends Component {
-  onFollowClick(id) {
-    this.props.addFollow(true, id);
-  }
-
-  onUnfollowClick(id) {
-    this.props.removeFollow(true, id);
-  }
-
   render() {
-    const { profile, followed, auth } = this.props;
+    const { profile, followed } = this.props;
 
     return (
       <div className="card card-body bg-light">
@@ -38,32 +28,11 @@ class PeopleSidebar extends Component {
         </div>
 
         <div className="text-center my-1">
-          {profile.user._id === auth.user.id ? (
-            <Link
-              to="/edit-profile"
-              type="button"
-              className="btn btn-info btn-sm font-weight-bold mt-2"
-            >
-              Edit Profile
-            </Link>
-          ) : followed ? (
-            <button
-              onClick={e => this.onUnfollowClick(profile.user._id)}
-              type="button"
-              className="btn btn-sm unfollow-button mt-2"
-            >
-              <span className="unfollow">Unfollow</span>
-              <span className="following">Following</span>
-            </button>
-          ) : (
-            <button
-              onClick={e => this.onFollowClick(profile.user._id)}
-              type="button"
-              className="btn btn-sm follow-button mt-2"
-            >
-              Follow
-            </button>
-          )}
+          <FollowButton
+            id={profile.user._id}
+            inSidebar={true}
+            followed={followed}
+          />
         </div>
 
         <div className="mt-4 text-center text-muted">
@@ -74,7 +43,7 @@ class PeopleSidebar extends Component {
             </p>
           )}
           <p className="mb-2">
-            <i class="far fa-calendar-alt font-size-6 mr-2" />
+            <i className="far fa-calendar-alt font-size-6 mr-2" />
             {"Joined "}
             <Moment format="MMMM, YYYY">{profile.date}</Moment>
           </p>
@@ -130,17 +99,4 @@ class PeopleSidebar extends Component {
   }
 }
 
-PeopleSidebar.propTypes = {
-  addFollow: PropTypes.func.isRequired,
-  removeFollow: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
-};
-
-const mapStateToProps = state => ({
-  auth: state.auth
-});
-
-export default connect(
-  mapStateToProps,
-  { addFollow, removeFollow }
-)(PeopleSidebar);
+export default PeopleSidebar;

@@ -17,20 +17,22 @@ import { logoutUser } from "./authActions";
 // Get current profile
 export const getCurrentProfile = () => dispatch => {
   dispatch(setProfileLoading());
-  axios
+  return axios
     .get("/api/profile")
     .then(res => {
       dispatch({
         type: GET_PROFILE,
         payload: res.data
       });
+      return res.data;
     })
-    .catch(err =>
+    .catch(err => {
       dispatch({
         type: GET_PROFILE,
-        payload: {}
-      })
-    );
+        payload: null
+      });
+      return false;
+    });
 };
 
 // Get profile by handle
@@ -126,7 +128,7 @@ export const getFollowersProfiles = userid => dispatch => {
 
 // Follow
 export const addFollow = (inSidebar, id) => dispatch => {
-  axios
+  return axios
     .post(`/api/follow/follow/${id}`)
     .then(res => {
       if (inSidebar) dispatch(updateProfile({ ...res.data, followed: true }));
@@ -142,7 +144,7 @@ export const addFollow = (inSidebar, id) => dispatch => {
 
 // Unfollow
 export const removeFollow = (inSidebar, id) => dispatch => {
-  axios
+  return axios
     .post(`/api/follow/unfollow/${id}`)
     .then(res => {
       if (inSidebar) dispatch(updateProfile({ ...res.data, followed: false }));
@@ -169,6 +171,14 @@ export const deleteAccount = () => dispatch => {
         })
       );
   }
+};
+
+// Get errors
+export const getErrors = errors => dispatch => {
+  dispatch({
+    type: GET_ERRORS,
+    payload: errors
+  });
 };
 
 // Profile loading (Single profile)

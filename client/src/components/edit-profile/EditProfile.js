@@ -6,12 +6,14 @@ import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import InputGroup from "../common/InputGroup";
 import SelectListGroup from "../common/SelectListGroup";
+import ButtonSpinner from "../common/ButtonSpinner";
 import {
   createProfile,
   getCurrentProfile,
+  getErrors,
   clearErrors
 } from "../../actions/profileActions";
-import { changeAvatar } from "../../actions/authActions";
+import { uploadImage, changeAvatar } from "../../actions/authActions";
 import isEmpty from "../../validation/is-empty";
 import validateFileInput from "../../validation/file";
 
@@ -32,7 +34,7 @@ class EditProfile extends Component {
       errors: {},
       file: "",
       imagePreviewUrl: "",
-      fileError: ""
+      uploading: false
     };
 
     this.onChange = this.onChange.bind(this);
@@ -41,47 +43,48 @@ class EditProfile extends Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
-    this.props.getCurrentProfile();
+    this.props.getCurrentProfile().then(profile => {
+      if (profile) {
+        // If profile field doesnt exist, make empty string
+        profile.gender = !isEmpty(profile.gender) ? profile.gender : "";
+        profile.birthday = !isEmpty(profile.birthday) ? profile.birthday : "";
+        profile.location = !isEmpty(profile.location) ? profile.location : "";
+        profile.website = !isEmpty(profile.website) ? profile.website : "";
+        profile.bio = !isEmpty(profile.bio) ? profile.bio : "";
+        profile.social = !isEmpty(profile.social) ? profile.social : {};
+        profile.youtube = !isEmpty(profile.social.youtube)
+          ? profile.social.youtube
+          : "";
+        profile.twitter = !isEmpty(profile.social.twitter)
+          ? profile.social.twitter
+          : "";
+        profile.facebook = !isEmpty(profile.social.facebook)
+          ? profile.social.facebook
+          : "";
+        profile.instagram = !isEmpty(profile.social.instagram)
+          ? profile.social.instagram
+          : "";
+
+        // Set component fields state
+        this.setState({
+          gender: profile.gender,
+          birthday: profile.birthday,
+          location: profile.location,
+          website: profile.website,
+          bio: profile.bio,
+          youtube: profile.youtube,
+          twitter: profile.twitter,
+          facebook: profile.facebook,
+          instagram: profile.instagram
+        });
+      }
+    });
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!isEmpty(nextProps.errors)) {
+    if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
-    } else if (nextProps.profile.profile) {
-      const profile = nextProps.profile.profile;
-
-      // If profile field doesnt exist, make empty string
-      profile.gender = !isEmpty(profile.gender) ? profile.gender : "";
-      profile.birthday = !isEmpty(profile.birthday) ? profile.birthday : "";
-      profile.location = !isEmpty(profile.location) ? profile.location : "";
-      profile.website = !isEmpty(profile.website) ? profile.website : "";
-      profile.bio = !isEmpty(profile.bio) ? profile.bio : "";
-      profile.social = !isEmpty(profile.social) ? profile.social : {};
-      profile.youtube = !isEmpty(profile.social.youtube)
-        ? profile.social.youtube
-        : "";
-      profile.twitter = !isEmpty(profile.social.twitter)
-        ? profile.social.twitter
-        : "";
-      profile.facebook = !isEmpty(profile.social.facebook)
-        ? profile.social.facebook
-        : "";
-      profile.instagram = !isEmpty(profile.social.instagram)
-        ? profile.social.instagram
-        : "";
-
-      // Set component fields state
-      this.setState({
-        gender: profile.gender,
-        birthday: profile.birthday,
-        location: profile.location,
-        website: profile.website,
-        bio: profile.bio,
-        youtube: profile.youtube,
-        twitter: profile.twitter,
-        facebook: profile.facebook,
-        instagram: profile.instagram
-      });
+      this.setState({ uploading: false });
     }
   }
 
@@ -95,18 +98,19 @@ class EditProfile extends Component {
 
     reader.onloadend = () => {
       // validate file: must be image && size < 10MB
-      const error = validateFileInput(file);
+      const { errors, isValid } = validateFileInput(file);
 
-      if (!isEmpty(error)) {
+      if (!isValid) {
+        // Clear out file input
+        this.props.getErrors(errors);
         this.setState({
-          fileError: error,
           file: "",
           imagePreviewUrl: ""
         });
         this.fileInput.value = "";
       } else {
+        this.props.clearErrors();
         this.setState({
-          fileError: "",
           file: file,
           imagePreviewUrl: reader.result
         });
@@ -119,17 +123,21 @@ class EditProfile extends Component {
   handleImageSubmit(e) {
     e.preventDefault();
 
-    let formData = new FormData();
-    if (this.state.file) {
-      formData.append("avatar", this.state.file);
-      this.props.changeAvatar(formData);
+    this.setState({ uploading: true }); // Activate uploading spinner
 
-      // clear out
-      this.setState({
-        file: "",
-        imagePreviewUrl: ""
+    if (this.state.file) {
+      this.props.uploadImage(this.state.file).then(uploadUrl => {
+        if (uploadUrl) {
+          this.props.changeAvatar(uploadUrl);
+          // clear out
+          this.setState({
+            file: "",
+            imagePreviewUrl: ""
+          });
+          this.fileInput.value = "";
+          this.setState({ uploading: false }); // Terminate uploading spinner
+        } else this.props.getErrors({ file: "Failed to upload the image" });
       });
-      this.fileInput.value = "";
     }
   }
 
@@ -162,7 +170,7 @@ class EditProfile extends Component {
       errors,
       displaySocialInputs,
       imagePreviewUrl,
-      fileError
+      uploading
     } = this.state;
 
     let socialInputs;
@@ -246,14 +254,15 @@ class EditProfile extends Component {
                       accept="image/*"
                       className="file-input"
                     />
-                    <input
+                    <button
                       type="submit"
-                      className="btn btn-dark float-right"
-                      value="Submit"
-                    />
+                      className="btn btn-dark float-right fixed-width-08"
+                    >
+                      {uploading ? <ButtonSpinner /> : "Submit"}
+                    </button>
                   </div>
                 </form>
-                {fileError && <p className="error-font">{fileError}</p>}
+                {errors.file && <div className="error-font">{errors.file}</div>}
                 {imagePreviewUrl && (
                   <img
                     className="post-img-preview mt-2"
@@ -338,7 +347,9 @@ class EditProfile extends Component {
 EditProfile.propTypes = {
   createProfile: PropTypes.func.isRequired,
   getCurrentProfile: PropTypes.func.isRequired,
+  getErrors: PropTypes.func.isRequired,
   clearErrors: PropTypes.func.isRequired,
+  uploadImage: PropTypes.func.isRequired,
   changeAvatar: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
@@ -356,7 +367,9 @@ export default connect(
   {
     createProfile,
     getCurrentProfile,
+    getErrors,
     clearErrors,
+    uploadImage,
     changeAvatar
   }
 )(withRouter(EditProfile));

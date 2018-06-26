@@ -5,10 +5,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
 const passport = require("passport");
-const multer = require("multer");
 const uuidv4 = require("uuid/v4");
-const path = require("path");
 const isEmpty = require("../../validation/is-empty");
+const aws = require("aws-sdk");
 
 // Load Input Validation
 const validateRegisterInput = require("../../validation/register");
@@ -21,21 +20,10 @@ const Profile = require("../../models/Profile");
 // Follow model
 const Follow = require("../../models/Follow");
 
-// Configure File Storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./uploads/avatars");
-  },
-  filename: (req, file, cb) => {
-    const newFilename = `${uuidv4()}${path.extname(file.originalname)}`;
-    cb(null, newFilename);
-  }
-});
-
-// File Uploader
-const uploadAvatar = multer({ storage });
-
+// List of valid user roles
 const roleList = ["NEW_USER", "ORDINARY_USER"];
+// S3 Config
+const S3_BUCKET = require("../../config/keys").s3Bucket;
 
 // @route   GET api/users/test
 // @desc    Tests users route
@@ -200,15 +188,12 @@ router.get(
 router.post(
   "/avatar",
   passport.authenticate("jwt", { session: false }),
-  uploadAvatar.single("avatar"),
   (req, res) => {
-    if (req.file) {
-      User.findByIdAndUpdate(
-        req.user.id,
-        { $set: { avatar: req.file.path } },
-        { new: true }
-      ).then(user => res.json(user.avatar));
-    }
+    User.findByIdAndUpdate(
+      req.user.id,
+      { $set: { avatar: req.body.avatarUrl } },
+      { new: true }
+    ).then(user => res.json(user.avatar));
   }
 );
 
@@ -226,6 +211,40 @@ router.post(
         { new: true }
       ).then(user => res.json(user));
     }
+  }
+);
+
+// @route   GET api/users/sign-s3
+// @desc    Get a signed request for uploading file to AWS S3
+// @access  Private
+router.get(
+  "/sign-s3",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const s3 = new aws.S3({ region: "us-west-1" });
+    const extName = req.query["ext-name"];
+    const fileType = req.query["file-type"];
+
+    const newFilename = `${uuidv4()}${extName}`;
+
+    const s3Params = {
+      Bucket: S3_BUCKET,
+      Key: `avatars/${newFilename}`,
+      Expires: 60,
+      ContentType: fileType,
+      ACL: "public-read"
+    };
+
+    s3.getSignedUrl("putObject", s3Params, (err, data) => {
+      if (err) {
+        return res.status(400).json(err);
+      }
+      const returnData = {
+        signedRequest: data,
+        url: `https://${S3_BUCKET}.s3.amazonaws.com/avatars/${newFilename}`
+      };
+      res.json(returnData);
+    });
   }
 );
 

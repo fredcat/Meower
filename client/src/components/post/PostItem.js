@@ -7,7 +7,6 @@ import { deletePost, addLike, removeLike } from "../../actions/postActions";
 import CommentForm from "./CommentForm";
 import CommentList from "./CommentList";
 import TimeDisplay from "../common/TimeDisplay";
-import testimage from "../../img/test-avatar1.jpg";
 
 class PostItem extends Component {
   constructor(props) {
@@ -65,7 +64,7 @@ class PostItem extends Component {
                 </Link>
                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                   <Link
-                    to=""
+                    to="#"
                     onClick={e => this.onDeleteClick(post._id)}
                     className="dropdown-item"
                   >
@@ -89,7 +88,7 @@ class PostItem extends Component {
             <p className="mb-2">{post.text}</p>
             {post.image && (
               <div className="post-image">
-                <img className="rounded" src={testimage} alt="postimage" />
+                <img className="rounded" src={post.image} alt="postimage" />
               </div>
             )}
 

@@ -1,6 +1,7 @@
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
+import path from "path";
 
 import { GET_ERRORS, SET_CURRENT_USER, SET_CURRENT_AVATAR } from "./types";
 
@@ -56,10 +57,43 @@ export const changeRole = roleData => dispatch => {
     );
 };
 
+export const uploadImage = file => dispatch => {
+  const extName = path.extname(file.name);
+  return axios
+    .get(`/api/users/sign-s3?ext-name=${extName}&file-type=${file.type}`)
+    .then(res => {
+      const uploadUrl = res.data.url;
+      const options = {
+        headers: {
+          "Content-Type": file.type
+        },
+        transformRequest: [
+          (data, headers) => {
+            delete headers.common.Authorization;
+            return data;
+          }
+        ]
+      };
+      return axios
+        .put(res.data.signedRequest, file, options)
+        .then(res => uploadUrl)
+        .catch(err => {
+          console.log(err.response.data);
+          return false;
+        });
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
 // Change Avatar
-export const changeAvatar = avatarData => dispatch => {
+export const changeAvatar = avatarUrl => dispatch => {
   axios
-    .post("/api/users/avatar", avatarData)
+    .post("/api/users/avatar", { avatarUrl })
     .then(res =>
       dispatch({
         type: SET_CURRENT_AVATAR,

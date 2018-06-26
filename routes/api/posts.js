@@ -1,9 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
-const multer = require("multer");
 const uuidv4 = require("uuid/v4");
-const path = require("path");
+const aws = require("aws-sdk");
 
 // Post model
 const Post = require("../../models/Post");
@@ -14,24 +13,53 @@ const Follow = require("../../models/Follow");
 const validatePostInput = require("../../validation/post");
 const validateCommentInput = require("../../validation/comment");
 
-// Configure File Storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./uploads/post-images");
-  },
-  filename: (req, file, cb) => {
-    const newFilename = `${uuidv4()}${path.extname(file.originalname)}`;
-    cb(null, newFilename);
-  }
-});
+// S3 Config
+const S3_BUCKET = require("../../config/keys").s3Bucket;
 
-// File Uploader
-const uploadPostImage = multer({ storage });
+// augment a post with liked information (whether current user has liked the post)
+const augmentPost = (post, currentUser) => ({
+  liked: post.likes.map(userid => userid.toString()).indexOf(currentUser) >= 0,
+  ...post
+});
 
 // @route   GET api/posts/test
 // @desc    Tests post route
 // @access  Public
 router.get("/test", (req, res) => res.json({ msg: "Posts Works" }));
+
+// @route   GET api/posts/sign-s3
+// @desc    Get a signed request for uploading file to AWS S3
+// @access  Private
+router.get(
+  "/sign-s3",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const s3 = new aws.S3({ region: "us-west-1" });
+    const extName = req.query["ext-name"];
+    const fileType = req.query["file-type"];
+
+    const newFilename = `${uuidv4()}${extName}`;
+
+    const s3Params = {
+      Bucket: S3_BUCKET,
+      Key: `postimages/${newFilename}`,
+      Expires: 60,
+      ContentType: fileType,
+      ACL: "public-read"
+    };
+
+    s3.getSignedUrl("putObject", s3Params, (err, data) => {
+      if (err) {
+        return res.status(400).json(err);
+      }
+      const returnData = {
+        signedRequest: data,
+        url: `https://${S3_BUCKET}.s3.amazonaws.com/postimages/${newFilename}`
+      };
+      res.json(returnData);
+    });
+  }
+);
 
 // @route   GET api/posts
 // @desc    Get posts
@@ -44,13 +72,9 @@ router.get(
       .sort({ date: -1 })
       .lean()
       .then(posts => {
-        // augmented with liked information (whether current user has liked the post)
-        const augmentedPosts = posts.map(post => ({
-          liked:
-            post.likes.map(userid => userid.toString()).indexOf(req.user.id) >=
-            0,
-          ...post
-        }));
+        const augmentedPosts = posts.map(post =>
+          augmentPost(post, req.user.id)
+        );
         res.json(augmentedPosts);
       })
       .catch(err => res.status(404).json({ nopostsfound: "No posts found" }));
@@ -72,14 +96,9 @@ router.get(
         .sort({ date: -1 })
         .lean()
         .then(posts => {
-          // augmented with liked information (whether current user has liked the post)
-          const augmentedPosts = posts.map(post => ({
-            liked:
-              post.likes
-                .map(userid => userid.toString())
-                .indexOf(req.user.id) >= 0,
-            ...post
-          }));
+          const augmentedPosts = posts.map(post =>
+            augmentPost(post, req.user.id)
+          );
           res.json(augmentedPosts);
         })
         .catch(err => res.status(404).json({ nopostsfound: "No posts found" }));
@@ -97,13 +116,7 @@ router.get(
     Post.findById(req.params.id)
       .lean()
       .then(post => {
-        // augmented with liked information (whether current user has liked the post)
-        const augmentedPost = {
-          liked:
-            post.likes.map(userid => userid.toString()).indexOf(req.user.id) >=
-            0,
-          ...post
-        };
+        const augmentedPost = augmentPost(post, req.user.id);
         res.json(augmentedPost);
       })
       .catch(err =>
@@ -123,13 +136,9 @@ router.get(
       .sort({ date: -1 })
       .lean()
       .then(posts => {
-        // augmented with liked information (whether current user has liked the post)
-        const augmentedPosts = posts.map(post => ({
-          liked:
-            post.likes.map(userid => userid.toString()).indexOf(req.user.id) >=
-            0,
-          ...post
-        }));
+        const augmentedPosts = posts.map(post =>
+          augmentPost(post, req.user.id)
+        );
         res.json(augmentedPosts);
       })
       .catch(err => res.status(404).json({ nopostsfound: "No posts found" }));
@@ -142,7 +151,6 @@ router.get(
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
-  uploadPostImage.single("image"),
   (req, res) => {
     const { errors, isValid } = validatePostInput(req.body);
 
@@ -152,13 +160,8 @@ router.post(
       return res.status(400).json(errors);
     }
 
-    let postData = { ...req.body };
-    if (req.file) {
-      postData.image = req.file.path;
-    }
-
     const newPost = new Post({
-      ...postData,
+      ...req.body,
       user: req.user.id
     });
 

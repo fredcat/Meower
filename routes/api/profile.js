@@ -12,6 +12,12 @@ const User = require("../../models/User");
 // Follow model
 const Follow = require("../../models/Follow");
 
+// augment a profile item with follow information (whether current user has followed this user)
+const augmentProfile = (profile, followings) => ({
+  followed: followings.findIndex(user => user.equals(profile.user._id)) >= 0,
+  ...profile
+});
+
 // @route   GET api/profile/test
 // @desc    Tests profile route
 // @access  Public
@@ -58,13 +64,9 @@ router.get(
             return res.status(404).json(errors);
           }
 
-          const augmentedProfiles = profiles.map(profile => ({
-            followed:
-              follow.followings.findIndex(user =>
-                user.equals(profile.user._id)
-              ) >= 0,
-            ...profile
-          }));
+          const augmentedProfiles = profiles.map(profile =>
+            augmentProfile(profile, follow.followings)
+          );
           res.json(augmentedProfiles);
         })
         .catch(err =>
@@ -92,13 +94,7 @@ router.get(
             errors.noprofile = "There is no profile for this user";
             return res.status(404).json(errors);
           }
-          const augmentedProfile = {
-            followed:
-              follow.followings.findIndex(user =>
-                user.equals(profile.user._id)
-              ) >= 0,
-            ...profile
-          };
+          const augmentedProfile = augmentProfile(profile, follow.followings);
           res.json(augmentedProfile);
         })
         .catch(err => {
@@ -152,13 +148,9 @@ router.get(
               return res.status(404).json(errors);
             }
 
-            const augmentedProfiles = profiles.map(profile => ({
-              followed:
-                myfollow.followings.findIndex(user =>
-                  user.equals(profile.user._id)
-                ) >= 0,
-              ...profile
-            }));
+            const augmentedProfiles = profiles.map(profile =>
+              augmentProfile(profile, myfollow.followings)
+            );
             res.json(augmentedProfiles);
           })
           .catch(err =>
@@ -189,13 +181,9 @@ router.get(
               return res.status(404).json(errors);
             }
 
-            const augmentedProfiles = profiles.map(profile => ({
-              followed:
-                myfollow.followings.findIndex(user =>
-                  user.equals(profile.user._id)
-                ) >= 0,
-              ...profile
-            }));
+            const augmentedProfiles = profiles.map(profile =>
+              augmentProfile(profile, myfollow.followings)
+            );
             res.json(augmentedProfiles);
           })
           .catch(err =>

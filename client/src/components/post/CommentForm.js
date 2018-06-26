@@ -23,11 +23,6 @@ class CommentForm extends Component {
     if (newProps.errors) {
       this.setState({ errors: newProps.errors });
     }
-    if (newProps.post.commentSuccess) {
-      this.setState({
-        text: ""
-      });
-    }
   }
 
   onSubmit(e) {
@@ -43,7 +38,12 @@ class CommentForm extends Component {
       avatar: avatar
     };
 
-    this.props.addComment(postId, newComment);
+    this.props.addComment(postId, newComment).then(success => {
+      if (success)
+        this.setState({
+          text: ""
+        });
+    });
   }
 
   onChange(e) {

@@ -24,11 +24,11 @@ body {
 }
 
 .landing-inner h1 {
-  font-family: Segoe Print;
+  font-family: Segoe Print, Textile, cursive;
 }
 
 .landing-inner p {
-  font-family: Comic Sans MS;
+  font-family: Comic Sans MS, Comic Sans, cursive;
 }
 
 .dark-overlay {
@@ -49,8 +49,8 @@ body {
 }
 
 .navbar-custom {
-  background-color: Beige;
-  box-shadow: 0px 2px 2px DarkKhaki;
+  background-color: rgb(243, 243, 211);
+  box-shadow: 0px 2px 2px rgb(184, 178, 94);
   padding: 0;
 }
 
@@ -64,9 +64,9 @@ body {
 
 .navbar-custom a.b-border:hover,
 .navbar-custom a.b-border.active {
-  background: PaleGoldenRod;
+  background: rgb(236, 230, 165);
   color: black;
-  border-bottom: 2px solid Orange;
+  border-bottom: 2px solid rgb(255, 174, 0);
 }
 
 .navbar-custom a.dropdown-header {
@@ -75,14 +75,14 @@ body {
 }
 
 .navbar-custom a.no-border:hover {
-  background: PaleGoldenRod;
+  background: rgb(236, 230, 165);
   color: black;
 }
 
 .navbar-brand {
   font-size: 1.5rem;
   font-weight: bold;
-  font-family: Segoe Print;
+  font-family: Segoe Print, Textile, cursive;
   padding: 0;
 }
 
@@ -106,11 +106,7 @@ body {
 .nav-avatar > img {
   width: 34px;
   height: 34px;
-}
-
-.footer-custom {
-  background-color: Beige;
-  box-shadow: 0px -2px 2px DarkKhaki;
+  object-fit: cover;
 }
 
 .name {
@@ -140,6 +136,7 @@ body {
 .post-avatar {
   width: 60px;
   height: 60px;
+  object-fit: cover;
 }
 
 .post-image {
@@ -239,6 +236,7 @@ body {
 .comment-avatar {
   width: 40px;
   height: 40px;
+  object-fit: cover;
 }
 
 .profile-avatar {
@@ -249,6 +247,7 @@ body {
 .profile-avatar > img {
   width: 200px;
   height: 200px;
+  object-fit: cover;
 }
 
 .people-avatar {
@@ -256,9 +255,10 @@ body {
   height: 180px;
 }
 
-.people-avatar > img {
+.people-avatar img {
   width: 180px;
   height: 180px;
+  object-fit: cover;
 }
 
 .follow-button {
@@ -285,10 +285,7 @@ body {
   width: 90px;
 }
 
-.unfollow-button:focus:hover {
-  background: #17a2b8;
-}
-.unfollow-button:hover {
+.unfollow-button.mouseOut:hover {
   background: #dc3545;
 }
 
@@ -296,24 +293,17 @@ body {
   box-shadow: none;
 }
 
-.unfollow-button .following,
+.unfollow-button .following {
+  display: inline;
+}
 .unfollow-button .unfollow {
   display: none;
 }
 
-.unfollow-button .following,
-.unfollow-button:focus:hover .following {
-  display: inline;
-}
-.unfollow-button .unfollow,
-.unfollow-button:focus:hover .unfollow {
+.unfollow-button.mouseOut:hover .following {
   display: none;
 }
-
-.unfollow-button:hover .following {
-  display: none;
-}
-.unfollow-button:hover .unfollow {
+.unfollow-button.mouseOut:hover .unfollow {
   display: inline;
 }
 
@@ -322,7 +312,7 @@ body {
 }
 
 .error-font {
-  color: red;
+  color: rgb(255, 0, 21);
   font-size: 0.8rem;
 }
 
@@ -366,6 +356,10 @@ body {
   width: 90px;
   padding-left: 15px;
   padding-right: 15px;
+}
+
+.fixed-width-08 {
+  width: 75px;
 }
 
 .font-size-1 {

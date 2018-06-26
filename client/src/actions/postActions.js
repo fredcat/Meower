@@ -1,14 +1,11 @@
 import axios from "axios";
+import path from "path";
 
 import {
   GET_POSTS,
   POST_LOADING,
   ADD_POST,
   DELETE_POST,
-  POST_SUCCESS,
-  CLEAR_POST_SUCCESS,
-  COMMENT_SUCCESS,
-  CLEAR_COMMENT_SUCCESS,
   UPDATE_POSTS,
   GET_ERRORS,
   CLEAR_ERRORS,
@@ -18,20 +15,49 @@ import {
 // Add Post
 export const addPost = postData => dispatch => {
   dispatch(clearErrors());
-  axios
+  return axios
     .post("/api/posts", postData)
     .then(res => {
       dispatch({
         type: ADD_POST,
         payload: res.data
       });
-      // send a success message to clear the textarea
+      // return a success message
+      return true;
+    })
+    .catch(err => {
       dispatch({
-        type: POST_SUCCESS
+        type: GET_ERRORS,
+        payload: err.response.data
       });
-      dispatch({
-        type: CLEAR_POST_SUCCESS
-      });
+      return false;
+    });
+};
+
+export const uploadImage = file => dispatch => {
+  const extName = path.extname(file.name);
+  return axios
+    .get(`/api/posts/sign-s3?ext-name=${extName}&file-type=${file.type}`)
+    .then(res => {
+      const uploadUrl = res.data.url;
+      const options = {
+        headers: {
+          "Content-Type": file.type
+        },
+        transformRequest: [
+          (data, headers) => {
+            delete headers.common.Authorization;
+            return data;
+          }
+        ]
+      };
+      return axios
+        .put(res.data.signedRequest, file, options)
+        .then(res => uploadUrl)
+        .catch(err => {
+          console.log(err.response.data);
+          return false;
+        });
     })
     .catch(err =>
       dispatch({
@@ -164,24 +190,20 @@ export const removeLike = id => dispatch => {
 // Add Comment
 export const addComment = (postId, commentData) => dispatch => {
   dispatch(clearErrors());
-  axios
+  return axios
     .post(`/api/posts/comment/${postId}`, commentData)
     .then(res => {
       dispatch(updatePosts({ ...res.data }));
-      // send a success message to clear the textarea
-      dispatch({
-        type: COMMENT_SUCCESS
-      });
-      dispatch({
-        type: CLEAR_COMMENT_SUCCESS
-      });
+      // return a success message
+      return true;
     })
-    .catch(err =>
+    .catch(err => {
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
-      })
-    );
+      });
+      return false;
+    });
 };
 
 // Delete Comment
@@ -195,6 +217,14 @@ export const deleteComment = (postId, commentId) => dispatch => {
         payload: err.response.data
       })
     );
+};
+
+// Get errors
+export const getErrors = errors => dispatch => {
+  dispatch({
+    type: GET_ERRORS,
+    payload: errors
+  });
 };
 
 // Set loading state
