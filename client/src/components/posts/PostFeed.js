@@ -22,10 +22,10 @@ class PostFeed extends Component {
 
   render() {
     return (
-      <div className="feed pt-4 screen-filled">
+      <div className="feed mt-4 screen-filled">
         <div className="fixed-width-7 m-auto">
           <PostForm />
-          <nav className="navbar navbar-expand-sm navbar-light mb-2 p-0 postfeed-nav font-size-3">
+          <nav className="navbar navbar-expand navbar-light mb-2 p-0 postfeed-nav font-size-3">
             <div>
               <ul className="navbar-nav mr-auto">
                 <li className="nav-item">

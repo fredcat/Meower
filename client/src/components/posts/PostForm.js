@@ -151,7 +151,7 @@ class PostForm extends Component {
                     </div>
                     <button
                       type="submit"
-                      className="btn btn-info btn-sm float-right"
+                      className="btn btn-info btn-sm float-right post-button"
                     >
                       {uploading ? <ButtonSpinner /> : "Post"}
                     </button>

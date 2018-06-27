@@ -43,7 +43,7 @@ class PostItem extends Component {
         <div className="media px-3 pt-3 pb-1">
           <Link to={`/people/${post.username}`}>
             <img
-              className="rounded-circle d-none d-md-block post-avatar mr-3"
+              className="rounded-circle post-avatar mr-3"
               src={post.avatar}
               alt={post.username}
             />
@@ -73,16 +73,24 @@ class PostItem extends Component {
                 </div>
               </div>
             ) : null}
+            {/* <Link to={`/people/${post.username}`}>
+              <img
+                className="rounded-circle d-sm-inline-block d-md-none post-avatar mr-3"
+                src={post.avatar}
+                alt={post.username}
+              />
+            </Link> */}
+            <div className="d-inline-block">
+              <Link to={`/people/${post.username}`}>
+                <div className="mt-0 name">{post.name} </div>
+                <div className="text-muted mt-0 ml-1 d-inline-block">
+                  @{post.username}
+                </div>
+              </Link>
 
-            <Link to={`/people/${post.username}`}>
-              <div className="mt-0 name">{post.name} </div>
-              <div className="text-muted mt-0 ml-1 d-inline-block">
-                @{post.username}
+              <div className="text-muted font-size-2 mb-1">
+                <TimeDisplay>{post.date}</TimeDisplay>
               </div>
-            </Link>
-
-            <div className="text-muted font-size-2 mb-1">
-              <TimeDisplay>{post.date}</TimeDisplay>
             </div>
 
             <p className="mb-2">{post.text}</p>

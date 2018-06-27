@@ -100,7 +100,7 @@ class Navbar extends Component {
     return (
       <nav className="navbar navbar-expand-sm navbar-light fixed-top mb-4 navbar-custom">
         <div className="container">
-          <Link className="navbar-brand mr-4 text-dark" to="/">
+          <Link className="navbar-brand mr-4 ml-2 text-dark" to="/">
             <img src={logo} alt="logo" /> Meower
           </Link>
           <button
@@ -108,6 +108,8 @@ class Navbar extends Component {
             type="button"
             data-toggle="collapse"
             data-target="#mobile-nav"
+            aria-haspopup="true"
+            aria-expanded="false"
           >
             <span className="navbar-toggler-icon" />
           </button>

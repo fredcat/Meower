@@ -7,7 +7,7 @@ p {
 }
 
 body {
-  padding-top: 40px;
+  padding-top: 2.625rem;
 }
 
 .landing {
@@ -16,19 +16,19 @@ body {
   background-size: cover;
   background-position: center;
   height: 100vh;
-  margin-bottom: -50px;
+  margin-bottom: -3rem;
 }
 
 .landing-inner {
-  padding-top: 130px;
+  padding-top: 20vh;
 }
 
 .landing-inner h1 {
-  font-family: Segoe Print, Textile, cursive;
+  font-family: Segoe Print, Textile, MarkerFelt-Wide, cursive;
 }
 
 .landing-inner p {
-  font-family: Comic Sans MS, Comic Sans, cursive;
+  font-family: Comic Sans MS, Comic Sans, ChalkboardSE-Regular, cursive;
 }
 
 .dark-overlay {
@@ -49,24 +49,24 @@ body {
 }
 
 .navbar-custom {
-  background-color: rgb(243, 243, 211);
-  box-shadow: 0px 2px 2px rgb(184, 178, 94);
+  background-color: rgb(250, 243, 240);
+  box-shadow: 0px 2px 2px rgb(165, 140, 130);
   padding: 0;
 }
 
 .navbar-custom a.b-border {
-  width: 90px;
+  width: 5.5rem;
   text-align: center;
   font-weight: bold;
   outline: none;
-  border-bottom: 2px solid transparent;
+  border-bottom: 0.125rem solid transparent;
 }
 
 .navbar-custom a.b-border:hover,
 .navbar-custom a.b-border.active {
-  background: rgb(236, 230, 165);
+  background: rgb(235, 225, 200);
   color: black;
-  border-bottom: 2px solid rgb(255, 174, 0);
+  border-bottom: 0.125rem solid rgb(255, 160, 0);
 }
 
 .navbar-custom a.dropdown-header {
@@ -75,19 +75,19 @@ body {
 }
 
 .navbar-custom a.no-border:hover {
-  background: rgb(236, 230, 165);
+  background: rgb(235, 225, 200);
   color: black;
 }
 
 .navbar-brand {
   font-size: 1.5rem;
   font-weight: bold;
-  font-family: Segoe Print, Textile, cursive;
+  font-family: Segoe Print, Textile, MarkerFelt-Wide, cursive;
   padding: 0;
 }
 
 .navbar-brand > img {
-  height: 38px;
+  height: 2.4rem;
   width: auto;
 }
 
@@ -99,13 +99,13 @@ body {
 
 .nav-avatar {
   width: 100%;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 
 .nav-avatar > img {
-  width: 34px;
-  height: 34px;
+  width: 2.125rem;
+  height: 2.125rem;
   object-fit: cover;
 }
 
@@ -133,20 +133,19 @@ body {
   width: auto;
 }
 
+.post-button {
+  width: 3rem;
+}
+
 .post-avatar {
   width: 60px;
   height: 60px;
   object-fit: cover;
 }
 
-.post-image {
-  max-height: 453px;
-  max-width: 490px;
-}
-
 .post-image > img {
   max-height: 450px;
-  max-width: 490px;
+  max-width: 100%;
   width: auto;
   margin-bottom: 3px;
 }
@@ -199,13 +198,13 @@ body {
 }
 
 .postfeed-nav a {
-  width: 110px;
-  padding: 4px;
+  width: 7rem;
+  padding: 0.25rem;
 }
 
 .postfeed-nav a.active,
 .postfeed-nav a:hover {
-  border-bottom: 2px solid #17a2b8;
+  border-bottom: 0.125rem solid #17a2b8;
 }
 
 .comment-box {
@@ -250,6 +249,10 @@ body {
   object-fit: cover;
 }
 
+.submit-avatar-button {
+  width: 5rem;
+}
+
 .people-avatar {
   width: 180px;
   height: 180px;
@@ -266,7 +269,7 @@ body {
   border: 2px solid #17a2b8;
   color: #17a2b8;
   font-weight: bold;
-  width: 90px;
+  width: 5.5rem;
 }
 
 .follow-button:hover {
@@ -282,7 +285,7 @@ body {
   border: 2px solid transparent;
   color: white;
   font-weight: bold;
-  width: 90px;
+  width: 5.5rem;
 }
 
 .unfollow-button.mouseOut:hover {
@@ -318,20 +321,22 @@ body {
 
 .fixed-width-8 {
   width: 720px;
-  padding-left: 15px;
-  padding-right: 15px;
 }
 
 .fixed-width-7 {
-  width: 630px;
-  padding-left: 15px;
-  padding-right: 15px;
+  width: 600px;
 }
 
-.fixed-width-6 {
-  width: 540px;
-  padding-left: 15px;
-  padding-right: 15px;
+@media only screen and (max-width: 630px) {
+  .fixed-width-7 {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 750px) {
+  .fixed-width-8 {
+    width: 100%;
+  }
 }
 
 .fixed-width-4 {
@@ -346,20 +351,10 @@ body {
   padding-right: 15px;
 }
 
-.fixed-width-3 {
-  width: 270px;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
 .fixed-width-1 {
-  width: 90px;
+  width: 100px;
   padding-left: 15px;
   padding-right: 15px;
-}
-
-.fixed-width-08 {
-  width: 75px;
 }
 
 .font-size-1 {

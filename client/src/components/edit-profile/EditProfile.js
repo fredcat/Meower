@@ -256,7 +256,7 @@ class EditProfile extends Component {
                     />
                     <button
                       type="submit"
-                      className="btn btn-dark float-right fixed-width-08"
+                      className="btn btn-dark float-right submit-avatar-button"
                     >
                       {uploading ? <ButtonSpinner /> : "Submit"}
                     </button>

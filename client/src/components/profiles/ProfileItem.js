@@ -12,14 +12,14 @@ class ProfileItem extends Component {
       <div className="media px-3 py-2 comment-item">
         <Link to={`/people/${profile.handle}`}>
           <img
-            className="rounded-circle d-none d-md-block post-avatar mr-3"
+            className="rounded-circle post-avatar mr-3"
             src={profile.user.avatar}
             alt={profile.user.username}
           />
         </Link>
         <div className="media-body">
           <div className="row">
-            <div className="col-9">
+            <div className="col">
               <Link to={`/people/${profile.handle}`} className="mt-0">
                 <h6 className="name">{profile.user.name} </h6>
                 <h6 className="text-muted ml-1 d-inline-block">
@@ -38,7 +38,7 @@ class ProfileItem extends Component {
                 <p className="mb-1">{profile.bio}</p>
               )}
             </div>
-            <div className="col-3 text-center">
+            <div className="col-auto text-center">
               <FollowButton
                 id={profile.user._id}
                 inSidebar={false}

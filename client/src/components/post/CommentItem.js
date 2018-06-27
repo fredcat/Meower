@@ -17,7 +17,7 @@ class CommentItem extends Component {
       <div className="media px-3 py-2 comment-item">
         <Link to={`/people/${comment.username}`}>
           <img
-            className="rounded-circle d-none d-md-block comment-avatar mr-3"
+            className="rounded-circle comment-avatar mr-3"
             src={comment.avatar}
             alt={comment.username}
           />
