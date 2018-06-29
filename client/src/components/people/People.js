@@ -108,8 +108,8 @@ class People extends Component {
     }
 
     return (
-      <div className="people d-sm-flex pt-4 screen-filled">
-        <div className="fixed-width-3_5 mb-4">{profileSidebar}</div>
+      <div className="people d-sm-flex pt-sm-4 pt-3 screen-filled">
+        <div className="fixed-width-3_5 mb-sm-4 mb-3">{profileSidebar}</div>
 
         <div className="fixed-width-7">
           <nav className="navbar navbar-expand navbar-light mb-2 p-0 postfeed-nav font-size-3">

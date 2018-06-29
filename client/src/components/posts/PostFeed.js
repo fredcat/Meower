@@ -22,7 +22,7 @@ class PostFeed extends Component {
 
   render() {
     return (
-      <div className="feed mt-4 screen-filled">
+      <div className="feed mt-sm-4 mt-3 screen-filled">
         <div className="fixed-width-7 m-auto">
           <PostForm />
           <nav className="navbar navbar-expand navbar-light mb-2 p-0 postfeed-nav font-size-3">

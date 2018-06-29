@@ -118,55 +118,54 @@ class PostForm extends Component {
     const { user, avatar } = this.props.auth;
 
     return (
-      <div className="mb-4">
-        <div className="card card-body p-0 bg-light post-box">
-          <div className="media pt-3 pb-2 px-3">
-            <img
-              className="rounded-circle d-none d-md-block comment-avatar mr-3"
-              src={avatar}
-              alt={user.username}
-            />
-            <div className="media-body">
-              <form onSubmit={this.onSubmit} encType="multipart/form-data">
-                <div className="mb-0">
-                  <TextAreaFieldGroup
-                    placeholder="Create a post"
-                    name="text"
-                    value={this.state.text}
-                    onChange={this.onChange}
-                    error={errors.posttext}
+      <div className="card card-body p-0 mb-sm-4 mb-3 bg-light post-box">
+        <div className="media pt-3 pb-2 px-sm-3 px-2">
+          <img
+            className="rounded-circle d-none d-sm-block comment-avatar mr-3"
+            src={avatar}
+            alt={user.username}
+          />
+          <div className="media-body">
+            <form className="mb-0" onSubmit={this.onSubmit}>
+              <TextAreaFieldGroup
+                placeholder="Create a post"
+                name="text"
+                value={this.state.text}
+                onChange={this.onChange}
+                error={errors.posttext}
+              />
+              <div className="row mt-2">
+                <div className="col pr-0">
+                  <input
+                    name="image"
+                    type="file"
+                    onChange={e => this.handleImageChange(e)}
+                    ref={ref => (this.fileInput = ref)}
+                    accept="image/*"
+                    className="file-input"
                   />
-                  <div className="mt-2">
-                    <div className="form-group d-inline-block">
-                      <input
-                        name="image"
-                        type="file"
-                        onChange={e => this.handleImageChange(e)}
-                        ref={ref => (this.fileInput = ref)}
-                        accept="image/*"
-                      />
-                      {errors.file && (
-                        <div className="error-font">{errors.file}</div>
-                      )}
-                    </div>
-                    <button
-                      type="submit"
-                      className="btn btn-info btn-sm float-right post-button"
-                    >
-                      {uploading ? <ButtonSpinner /> : "Post"}
-                    </button>
-                  </div>
+                  {errors.file && (
+                    <div className="error-font">{errors.file}</div>
+                  )}
                 </div>
-              </form>
+                <div className="col-auto pl-0">
+                  <button
+                    type="submit"
+                    className="btn btn-info btn-sm post-button"
+                  >
+                    {uploading ? <ButtonSpinner /> : "Post"}
+                  </button>
+                </div>
+              </div>
+            </form>
 
-              {imagePreviewUrl && (
-                <img
-                  className="post-img-preview my-2"
-                  src={imagePreviewUrl}
-                  alt="preview"
-                />
-              )}
-            </div>
+            {imagePreviewUrl && (
+              <img
+                className="post-img-preview my-2"
+                src={imagePreviewUrl}
+                alt="preview"
+              />
+            )}
           </div>
         </div>
       </div>

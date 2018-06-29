@@ -14,10 +14,10 @@ class CommentItem extends Component {
     const { comment, postId, auth } = this.props;
 
     return (
-      <div className="media px-3 py-2 comment-item">
+      <div className="media px-sm-3 px-2 py-2 comment-item">
         <Link to={`/people/${comment.username}`}>
           <img
-            className="rounded-circle comment-avatar mr-3"
+            className="rounded-circle comment-avatar mr-sm-3 mr-2"
             src={comment.avatar}
             alt={comment.username}
           />

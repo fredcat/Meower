@@ -8,7 +8,7 @@ class Profiles extends Component {
 
   render() {
     return (
-      <div className="profiles pt-4 screen-filled">
+      <div className="profiles pt-sm-4 pt-3 screen-filled">
         <div className="fixed-width-7 m-auto">
           <div className="card card-body mb-3 p-0">
             <div className="media">

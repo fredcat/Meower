@@ -31,7 +31,7 @@ class SinglePost extends Component {
     }
 
     return (
-      <div className="post pt-4 screen-filled">
+      <div className="post pt-sm-4 pt-3 screen-filled">
         <div className="fixed-width-7 m-auto">{postContent}</div>
       </div>
     );

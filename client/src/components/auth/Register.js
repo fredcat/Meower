@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { registerUser } from "../../actions/authActions";
 import TextFieldGroup from "../common/TextFieldGroup";
+import ButtonSpinner from "../common/ButtonSpinner";
 
 class Register extends Component {
   constructor() {
@@ -14,7 +15,8 @@ class Register extends Component {
       email: "",
       password: "",
       password2: "",
-      errors: {}
+      errors: {},
+      loading: false
     };
 
     this.onChange = this.onChange.bind(this);
@@ -31,6 +33,7 @@ class Register extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
+      this.setState({ loading: false }); // Terminate loading spinner
     }
   }
 
@@ -40,6 +43,8 @@ class Register extends Component {
 
   onSubmit(e) {
     e.preventDefault();
+
+    this.setState({ loading: true }); // Activate loading spinner
 
     const newUser = {
       username: this.state.username,
@@ -53,7 +58,7 @@ class Register extends Component {
   }
 
   render() {
-    const { errors } = this.state;
+    const { errors, loading } = this.state;
 
     return (
       <div className="register landing">
@@ -104,11 +109,9 @@ class Register extends Component {
                     onChange={this.onChange}
                     error={errors.password2}
                   />
-                  <input
-                    type="submit"
-                    className="btn btn-info btn-block mt-4"
-                    value="Sign up"
-                  />
+                  <button type="submit" className="btn btn-info btn-block mt-4">
+                    {loading ? <ButtonSpinner /> : "Sign up"}
+                  </button>
                 </form>
               </div>
             </div>

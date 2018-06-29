@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { loginUser } from "../../actions/authActions";
 import TextFieldGroup from "../common/TextFieldGroup";
+import ButtonSpinner from "../common/ButtonSpinner";
 
 class Login extends Component {
   constructor() {
@@ -11,7 +12,8 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      errors: {}
+      errors: {},
+      loading: false
     };
 
     this.onChange = this.onChange.bind(this);
@@ -37,11 +39,14 @@ class Login extends Component {
 
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
+      this.setState({ loading: false }); // Terminate loading spinner
     }
   }
 
   onSubmit(e) {
     e.preventDefault();
+
+    this.setState({ loading: true }); // Activate loading spinner
 
     const userData = {
       email: this.state.email,
@@ -56,7 +61,7 @@ class Login extends Component {
   }
 
   render() {
-    const { errors } = this.state;
+    const { errors, loading } = this.state;
 
     return (
       <div className="login landing">
@@ -87,11 +92,9 @@ class Login extends Component {
                     onChange={this.onChange}
                     error={errors.password}
                   />
-                  <input
-                    type="submit"
-                    className="btn btn-info btn-block mt-4"
-                    value="Log in"
-                  />
+                  <button type="submit" className="btn btn-info btn-block mt-4">
+                    {loading ? <ButtonSpinner /> : "Log in"}
+                  </button>
                 </form>
               </div>
             </div>

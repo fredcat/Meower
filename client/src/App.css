@@ -129,7 +129,8 @@ body {
 }
 
 .post-img-preview {
-  height: 150px;
+  max-height: 150px;
+  max-width: 100%;
   width: auto;
 }
 
@@ -141,6 +142,14 @@ body {
   width: 60px;
   height: 60px;
   object-fit: cover;
+}
+
+@media only screen and (max-width: 480px) {
+  .post-avatar {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+  }
 }
 
 .post-image > img {
@@ -238,6 +247,14 @@ body {
   object-fit: cover;
 }
 
+@media only screen and (max-width: 480px) {
+  .comment-avatar {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+  }
+}
+
 .profile-avatar {
   width: 200px;
   height: 200px;
@@ -311,7 +328,7 @@ body {
 }
 
 .file-input {
-  width: 280px;
+  width: 100%;
 }
 
 .error-font {

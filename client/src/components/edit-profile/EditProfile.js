@@ -225,15 +225,15 @@ class EditProfile extends Component {
     ];
 
     return (
-      <div className="edit-profile pt-4 screen-filled">
+      <div className="edit-profile pt-sm-4 pt-3 screen-filled">
         <div className="fixed-width-8 m-auto">
           <h1 className="text-center">Edit Profile</h1>
-          <div className="card card-body mt-4 mb-5 p-3 bg-light">
+          <div className="card card-body mt-sm-4 mt-3 mb-sm-5 mb-4 p-3 bg-light">
             <h5>
               <strong>Change Avatar</strong>
             </h5>
             <div className="row">
-              <div className="col-md-5">
+              <div className="col-md-5 mb-2">
                 <h6>Current avatar</h6>
                 <div className="profile-avatar">
                   <img className="img-thumbnail" src={avatar} alt="avatar" />
@@ -241,25 +241,26 @@ class EditProfile extends Component {
               </div>
               <div className="col-md-7">
                 <h6>Choose an image</h6>
-                <form
-                  onSubmit={e => this.handleImageSubmit(e)}
-                  encType="multipart/form-data"
-                >
-                  <div>
-                    <input
-                      name="image"
-                      type="file"
-                      onChange={e => this.handleImageChange(e)}
-                      ref={ref => (this.fileInput = ref)}
-                      accept="image/*"
-                      className="file-input"
-                    />
-                    <button
-                      type="submit"
-                      className="btn btn-dark float-right submit-avatar-button"
-                    >
-                      {uploading ? <ButtonSpinner /> : "Submit"}
-                    </button>
+                <form onSubmit={e => this.handleImageSubmit(e)}>
+                  <div className="row">
+                    <div className="col pr-0">
+                      <input
+                        name="image"
+                        type="file"
+                        onChange={e => this.handleImageChange(e)}
+                        ref={ref => (this.fileInput = ref)}
+                        accept="image/*"
+                        className="file-input"
+                      />
+                    </div>
+                    <div className="col-auto pl-0">
+                      <button
+                        type="submit"
+                        className="btn btn-dark float-right submit-avatar-button"
+                      >
+                        {uploading ? <ButtonSpinner /> : "Submit"}
+                      </button>
+                    </div>
                   </div>
                 </form>
                 {errors.file && <div className="error-font">{errors.file}</div>}

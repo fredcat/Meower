@@ -35,7 +35,7 @@ class Navbar extends Component {
 
     const authRightLinks = (
       <ul className="navbar-nav ml-auto">
-        <li className="nav-item" key="mypage">
+        <li className="nav-item d-sm-none d-md-block" key="mypage">
           <Link
             className="nav-link font-size-3"
             to={`/people/${user.username}`}

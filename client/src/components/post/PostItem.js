@@ -39,11 +39,11 @@ class PostItem extends Component {
     const { displayComments } = this.state;
 
     return (
-      <div className="card card-body mb-3 p-0">
-        <div className="media px-3 pt-3 pb-1">
+      <div className="card card-body mb-sm-3 mb-2 p-0">
+        <div className="media px-sm-3 px-2 pt-sm-3 pt-2 pb-1">
           <Link to={`/people/${post.username}`}>
             <img
-              className="rounded-circle post-avatar mr-3"
+              className="rounded-circle post-avatar mr-sm-3 mr-2"
               src={post.avatar}
               alt={post.username}
             />
@@ -73,24 +73,15 @@ class PostItem extends Component {
                 </div>
               </div>
             ) : null}
-            {/* <Link to={`/people/${post.username}`}>
-              <img
-                className="rounded-circle d-sm-inline-block d-md-none post-avatar mr-3"
-                src={post.avatar}
-                alt={post.username}
-              />
-            </Link> */}
-            <div className="d-inline-block">
-              <Link to={`/people/${post.username}`}>
-                <div className="mt-0 name">{post.name} </div>
-                <div className="text-muted mt-0 ml-1 d-inline-block">
-                  @{post.username}
-                </div>
-              </Link>
-
-              <div className="text-muted font-size-2 mb-1">
-                <TimeDisplay>{post.date}</TimeDisplay>
+            <Link to={`/people/${post.username}`}>
+              <div className="mt-0 name">{post.name} </div>
+              <div className="text-muted mt-0 ml-1 d-inline-block">
+                @{post.username}
               </div>
+            </Link>
+
+            <div className="text-muted font-size-2 mb-1">
+              <TimeDisplay>{post.date}</TimeDisplay>
             </div>
 
             <p className="mb-2">{post.text}</p>

@@ -64,9 +64,9 @@ class CommentForm extends Component {
     const { postId } = this.props;
 
     return (
-      <div className="media p-3 comment-box bg-light">
+      <div className="media p-sm-3 p-2 comment-box bg-light">
         <img
-          className="rounded-circle d-none d-md-block comment-avatar mr-3"
+          className="rounded-circle d-none d-sm-block comment-avatar mr-3"
           src={avatar}
           alt={user.username}
         />
