@@ -144,10 +144,10 @@ body {
   object-fit: cover;
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 460px) {
   .post-avatar {
-    width: 45px;
-    height: 45px;
+    width: 50px;
+    height: 50px;
     object-fit: cover;
   }
 }
@@ -247,10 +247,10 @@ body {
   object-fit: cover;
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 460px) {
   .comment-avatar {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     object-fit: cover;
   }
 }

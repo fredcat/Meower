@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
-import { setCurrentUser, logoutUser, setCurrentAvatar } from "./actions/authActions";
+import {
+  setCurrentUser,
+  logoutUser,
+  setCurrentAvatar
+} from "./actions/authActions";
 import { clearProfile } from "./actions/profileActions";
 import { clearPost } from "./actions/postActions";
 
@@ -62,7 +66,7 @@ class App extends Component {
             <Route exact path="/" component={Landing} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
-            <div className="container">
+            <div className="container px-sm-3 px-2">
               <Switch>
                 <PrivateRoute exact path="/profiles" component={Profiles} />
               </Switch>
