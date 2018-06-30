@@ -10,10 +10,15 @@ const InputGroup = ({
   error,
   icon,
   type,
-  onChange
+  onChange,
+  small
 }) => {
   return (
-    <div className="input-group mb-3">
+    <div
+      className={classnames("input-group", {
+        "mb-3": !small
+      })}
+    >
       <div className="input-group-prepend">
         <span className="input-group-text">
           <i className={icon} />
@@ -22,6 +27,7 @@ const InputGroup = ({
       <input
         type={type}
         className={classnames("form-control", {
+          "form-control-sm": small,
           "is-invalid": error
         })}
         placeholder={placeholder}
@@ -42,11 +48,13 @@ InputGroup.propTypes = {
   icon: PropTypes.string,
   error: PropTypes.string,
   type: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
+  small: PropTypes.boolean
 };
 
 InputGroup.defaultProps = {
-  type: "text"
+  type: "text",
+  small: false
 };
 
 export default InputGroup;

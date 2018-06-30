@@ -90,8 +90,13 @@ class PostItem extends Component {
                 <img className="rounded" src={post.image} alt="postimage" />
               </div>
             )}
+            {post.video && (
+              <div className="videowrapper">
+                <iframe title="video" src={post.video} frameBorder="0" />
+              </div>
+            )}
 
-            <div className="btn-group post-buttons" role="group">
+            <div className="btn-group post-buttons mt-1" role="group">
               <button
                 onClick={
                   post.liked

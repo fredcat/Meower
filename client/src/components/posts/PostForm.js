@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import classnames from "classnames";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
+import InputGroup from "../common/InputGroup";
 import ButtonSpinner from "../common/ButtonSpinner";
 import {
   addPost,
@@ -19,7 +21,10 @@ class PostForm extends Component {
       text: "",
       file: "",
       imagePreviewUrl: "",
+      videoUrl: "",
       errors: {},
+      showPhoto: false,
+      showVideo: false,
       uploading: false
     };
 
@@ -36,6 +41,34 @@ class PostForm extends Component {
 
   componentWillUnmount() {
     this.props.clearErrors();
+  }
+
+  onPhotoClick() {
+    this.setState(prevState => ({
+      showPhoto: !prevState.showPhoto,
+      showVideo: false,
+      videoUrl: ""
+    }));
+  }
+
+  onVideoClick() {
+    this.setState(prevState => ({
+      showVideo: !prevState.showVideo,
+      showPhoto: false,
+      file: "",
+      imagePreviewUrl: ""
+    }));
+  }
+
+  toEmbedUrl(url) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp); // get the YouTube video ID
+
+    if (match && match[2].length === 11) {
+      return `https://www.youtube.com/embed/${match[2]}`;
+    } else {
+      return null;
+    }
   }
 
   onChange(e) {
@@ -74,7 +107,10 @@ class PostForm extends Component {
     this.setState({
       text: "",
       file: "",
-      imagePreviewUrl: ""
+      imagePreviewUrl: "",
+      videoUrl: "",
+      showPhoto: false,
+      showVideo: false
     });
     this.fileInput.value = "";
   }
@@ -92,8 +128,18 @@ class PostForm extends Component {
       name: user.name,
       avatar: avatar
     };
+    if (this.state.videoUrl) newPost.video = this.state.videoUrl;
+
+    if (this.state.file && this.state.videoUrl)
+      return this.props.getErrors({
+        file: "Only accept either one photo or one video in one post",
+        video: "Only accept either one photo or one video in one post"
+      });
     const { errors, isValid } = validatePostInput(newPost);
     if (!isValid) return this.props.getErrors(errors);
+
+    if (this.state.videoUrl)
+      newPost.video = this.toEmbedUrl(this.state.videoUrl);
 
     if (this.state.file) {
       this.props.uploadImage(this.state.file).then(uploadUrl => {
@@ -114,7 +160,14 @@ class PostForm extends Component {
   }
 
   render() {
-    const { errors, imagePreviewUrl, uploading } = this.state;
+    const {
+      errors,
+      imagePreviewUrl,
+      uploading,
+      showPhoto,
+      showVideo,
+      videoUrl
+    } = this.state;
     const { user, avatar } = this.props.auth;
 
     return (
@@ -136,8 +189,46 @@ class PostForm extends Component {
               />
               <div className="row mt-2">
                 <div className="col pr-0">
+                  <div className="btn-group postform-buttons" role="group">
+                    <button
+                      type="button"
+                      className={classnames("btn btn-sm font-weight-bold", {
+                        "text-muted": !showPhoto,
+                        "btn-light": !showPhoto,
+                        "btn-primary": showPhoto
+                      })}
+                      onClick={e => this.onPhotoClick()}
+                    >
+                      <i class="far fa-image mr-1" />
+                      Photo
+                    </button>
+                    <button
+                      type="button"
+                      className={classnames("btn btn-sm font-weight-bold", {
+                        "text-muted": !showVideo,
+                        "btn-light": !showVideo,
+                        "btn-primary": showVideo
+                      })}
+                      onClick={e => this.onVideoClick()}
+                    >
+                      <i class="fab fa-youtube mr-1" />
+                      Video
+                    </button>
+                  </div>
+                </div>
+                <div className="col-auto pl-0">
+                  <button
+                    type="submit"
+                    className="btn btn-info btn-sm font-weight-bold post-button"
+                  >
+                    {uploading ? <ButtonSpinner /> : "Post"}
+                  </button>
+                </div>
+              </div>
+              {showPhoto && (
+                <div className="mt-1">
                   <input
-                    name="image"
+                    name="file"
                     type="file"
                     onChange={e => this.handleImageChange(e)}
                     ref={ref => (this.fileInput = ref)}
@@ -147,25 +238,39 @@ class PostForm extends Component {
                   {errors.file && (
                     <div className="error-font">{errors.file}</div>
                   )}
+                  {imagePreviewUrl && (
+                    <img
+                      className="post-img-preview my-2"
+                      src={imagePreviewUrl}
+                      alt="preview"
+                    />
+                  )}
                 </div>
-                <div className="col-auto pl-0">
-                  <button
-                    type="submit"
-                    className="btn btn-info btn-sm post-button"
-                  >
-                    {uploading ? <ButtonSpinner /> : "Post"}
-                  </button>
+              )}
+              {showVideo && (
+                <div className="mt-1">
+                  <InputGroup
+                    placeholder="YouTube Video URL"
+                    name="videoUrl"
+                    icon="fab fa-youtube"
+                    value={videoUrl}
+                    onChange={this.onChange}
+                    error={errors.video}
+                    small={true}
+                  />
+                  {videoUrl &&
+                    this.toEmbedUrl(videoUrl) && (
+                      <iframe
+                        height="150"
+                        title="video"
+                        src={this.toEmbedUrl(videoUrl)}
+                        frameBorder="0"
+                        className=" mt-2"
+                      />
+                    )}
                 </div>
-              </div>
+              )}
             </form>
-
-            {imagePreviewUrl && (
-              <img
-                className="post-img-preview my-2"
-                src={imagePreviewUrl}
-                alt="preview"
-              />
-            )}
           </div>
         </div>
       </div>
