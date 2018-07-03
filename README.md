@@ -2,7 +2,7 @@
 
 A Cat-Themed Social Networking Website
 
-Link: https://thawing-tundra-35153.herokuapp.com
+Link: https://meower-cats.herokuapp.com/
 
 (As the app will be unloaded after a period of inactivity, sometimes it may take as long as 10 secs to load the landing page. Please be patient.)
 
@@ -66,3 +66,5 @@ To apply the concept of raising cat on cloud, I build this cat-themed social net
 - Cat Profile
 - Search
 - Popularity Ranking
+- Recommender System
+- Personal Message
